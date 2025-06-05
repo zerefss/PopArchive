@@ -1,30 +1,24 @@
 package com.example.Pop_Archive.Model;
 
 
-import java.util.Date;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 
+@Entity
 public class PopSong {
-   private int id;
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY )
+   private Long id;
+
    private String title;
    private String genre;
-   private Date year;
-   private int rating;
+   @ManyToOne(cascade = CascadeType.PERSIST)
+   @JoinColumn(name = "artist_id")
+   @JsonBackReference
+   private Artist artist;
 
-   public PopSong(int id, String title, String genre, Date year, int rating) {
-      this.id = id;
-      this.title = title;
-      this.genre = genre;
-      this.year = year;
-      this.rating = rating;
-   }
-
-   public int getId() {
+   public Long getId() {
       return id;
-   }
-
-   public void setId(int id) {
-      this.id = id;
    }
 
    public String getTitle() {
@@ -43,31 +37,12 @@ public class PopSong {
       this.genre = genre;
    }
 
-   public Date getYear() {
-      return year;
+   public Artist getArtist() {
+      return artist;
    }
 
-   public void setYear(Date year) {
-      this.year = year;
+   public void setArtist(Artist artist) {
+      this.artist = artist;
    }
 
-   public int getRating() {
-      return rating;
-   }
-
-   public void setRating(int rating) {
-      this.rating = rating;
-   }
-
-   @Override
-   public boolean equals(Object o) {
-      if (this == o) return true;
-      if (!(o instanceof PopSong popSong)) return false;
-      return id == popSong.id && rating == popSong.rating && Objects.equals(title, popSong.title) && Objects.equals(genre, popSong.genre) && Objects.equals(year, popSong.year);
-   }
-
-   @Override
-   public int hashCode() {
-      return Objects.hash(id, title, genre, year, rating);
-   }
 }
